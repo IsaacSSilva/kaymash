@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-
-type KeyCombo = string[];
-type Callback = () => void;
+import { Callback, KeyCombo } from "./Types/keymash.type";
 
 const activeCombos = new Set<string>();
 const pressedKeys = new Set<string>();
@@ -68,7 +66,7 @@ function detachListeners() {
   pressedKeys.clear();
 }
 
-export function useKaymash(combo: KeyCombo, callback: Callback) {
+export function useKeymash(combo: KeyCombo, callback: Callback) {
   useEffect(() => {
     const id = comboId(combo);
 
