@@ -1,2 +1,2 @@
-export { useKaymash } from "v0/kaymash";
+export { useKeymash } from "@/v0/keymash";
 export { useKeymashList } from "v1/useKeymashList";
