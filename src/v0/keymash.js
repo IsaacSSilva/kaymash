@@ -56,7 +56,7 @@ function detachListeners() {
     activeCombos.clear();
     pressedKeys.clear();
 }
-export function useKaymash(combo, callback) {
+export function useKeymash(combo, callback) {
     useEffect(() => {
         const id = comboId(combo);
         // Registra o combo

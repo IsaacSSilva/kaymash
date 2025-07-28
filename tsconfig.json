@@ -1,21 +1,8 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": ["DOM", "ESNext"],
     "declaration": true,
-    "outDir": "dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./src/*"],
-      "v1/*": ["./src/v1/src/hooks/*"],
-      "option/v1/*": ["./src/v1/*"],
-      "v0/*": ["./src/v0/src/*", "./src/v0/*"]
-    }
+    "outDir": "dist"
   },
   "include": ["src", "index.ts", "src/.beta/.v1/kaymash.ts"]
 }
