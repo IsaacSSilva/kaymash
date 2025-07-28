@@ -1,6 +1,6 @@
 {
   "name": "kaymash",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Hook de atalho de teclado",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
