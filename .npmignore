@@ -1,0 +1,17 @@
+# Arquivos desnecessários no pacote
+src/
+tests/
+__tests__/
+.vscode/
+.idea/
+node_modules/
+.git/
+.gitignore
+.npmignore
+tsconfig.json
+tsconfig.build.json
+*.test.*
+*.spec.*
+jest.config.*
+README-old.md
+playground/
