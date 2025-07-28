@@ -1,30 +1,79 @@
-# 🧠 Kaymash
+Perfeito! Aqui está o `README.md` atualizado com todas as melhorias do **keymash/v2**, **mantendo compatibilidade com a API antiga** via a função `useKaymash`.
 
-**React Hook para criação de atalhos de teclado com bloqueio de eventos padrão.**  
-Simples, direto e funcional.
+---
+
+````md
+# 🧠 keymash
+
+**React Hook para atalhos de teclado com suporte a múltiplos contextos (`range`), registro em massa e bloqueio automático de eventos nativos.**  
+Agora modular, mais poderoso — **e ainda compatível com a versão antiga** via `useKaymash`.
 
 ---
 
 ## 🚀 Instalação
 
 ```bash
-pnpm add kaymash
+pnpm add keymash
 # ou
-npm install kaymash
+npm install keymash
+```
+````
+
+## Formas de utilizar
+
+existe duas formas de usar sendo elas listando ou declarando diretamente.
+
+- **useKeymashList**
+- **useKaymash**
+
+---
+
+<br/>
+
+## 🧪 useKeymashList (versão nova)
+
+```tsx
+import { useKeymashList } from "keymash";
+
+function App() {
+  useKeymashList(
+    [
+      {
+        combo: ["Control", "k"],
+        action: () => alert("🔍 Busca ativada!"),
+        range: ["global"],
+        description: "Abrir busca",
+      },
+      {
+        combo: ["Shift", "p"],
+        action: () => console.log("Apresentação ativada"),
+        range: ["editor"],
+        description: "Modo apresentação",
+      },
+    ],
+    {
+      activeRanges: ["global", "editor"],
+    }
+  );
+
+  return <div>Atalhos ativados. Pressione e veja o que acontece!</div>;
+}
 ```
 
 ---
 
-## 🧪 Exemplo de uso
+## useKaymash
+
+Você ainda pode usar a API simples e direta da versão anterior com `useKaymash`, se quiser manter o estilo enxuto:
 
 ```tsx
-import { useKaymash } from "kaymash";
+import { useKaymash } from "keymash";
 
 function App() {
   const [ativo, setAtivo] = useState(false);
 
   useKaymash(["Control", "k"], () => {
-    setAtivo((prev) => !prev);
+    setAtivo(!ativo);
   });
 
   return (
@@ -39,31 +88,59 @@ function App() {
 
 ## ⚙️ API
 
-### `useKaymash(combo: string[], callback: () => void)`
+### 🔹 `useKeymashList(shortcuts: Shortcut[], options?: UseKeymashListOptions)`
 
-| Parâmetro  | Tipo         | Descrição                                       |
-| ---------- | ------------ | ----------------------------------------------- |
-| `combo`    | `string[]`   | Lista de teclas que formam o atalho             |
-| `callback` | `() => void` | Função executada quando o combo for pressionado |
+#### 🔑 Shortcut
 
-🔒 O hook bloqueia os eventos padrão do navegador (como Ctrl+S, Ctrl+K) enquanto o combo está ativo.
+| Campo         | Tipo         | Obrigatório | Descrição                                       |
+| ------------- | ------------ | ----------- | ----------------------------------------------- |
+| `combo`       | `string[]`   | ✅          | Teclas do atalho (ex: `["Control", "k"]`)       |
+| `action`      | `() => void` | ✅          | Função executada ao disparar o combo            |
+| `range`       | `string[]`   | ❌          | Contextos onde o atalho é válido (`["editor"]`) |
+| `description` | `string`     | ❌          | Texto explicativo, útil para docs/UI            |
+
+#### ⚙️ UseKeymashListOptions
+
+| Campo          | Tipo       | Obrigatório | Descrição                                         |
+| -------------- | ---------- | ----------- | ------------------------------------------------- |
+| `activeRanges` | `string[]` | ❌          | Quais ranges estão ativos (default: `["global"]`) |
+
+---
+
+### 🔹 `useKaymash(combo: string[], callback: () => void)`
+
+Compatível com versões anteriores. Registro simples de um atalho único.
 
 ---
 
 ## ✅ Recursos
 
-- [x] Suporte a qualquer combinação de teclas (`["Control", "k"]`, `["Shift", "Alt", "s"]`, etc.)
-- [x] Bloqueio confiável de eventos padrão (`preventDefault`)
-- [x] Suporte à ordem invertida (pressionar `k` antes de `Control` funciona também)
-- [x] Hook limpo com registro automático e cleanup
-- [x] Sem dependências externas
+- [x] Registro em massa de atalhos (`array de Shortcut`)
+- [x] Suporte a contextos com `range`
+- [x] `preventDefault` automático (bloqueia atalhos do navegador)
+- [x] Suporte à ordem invertida de teclas
+- [x] Cleanup automático no `unmount`
+- [x] Arquitetura modular e extensível
+- [x] Compatível com o hook antigo `useKaymash`
+
+---
+
+## 🔧 Dica avançada
+
+Quer listar os atalhos registrados?
+
+```ts
+import { normalizeShortcuts } from "keymash/core";
+
+console.table(normalizeShortcuts(shortcuts));
+```
 
 ---
 
 ## 📦 Requisitos
 
 - React 18 ou 19
-- TypeScript (opcional, mas recomendado)
+- TypeScript (opcional, mas altamente recomendado)
 
 ---
 
@@ -73,4 +150,4 @@ function App() {
 
 ---
 
-Feito com café e teimosia por **S.Silva.**
+Feito com café, paciência e teclado por **S.Silva.**
