@@ -1,8 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
     "declaration": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": ["DOM", "ES2017", "ES2018", "ESNext"]
   },
   "include": ["src", "index.ts", "src/.beta/.v1/kaymash.ts"]
 }
