@@ -1,0 +1,37 @@
+{
+  "name": "kaymash",
+  "version": "0.1.1",
+  "description": "Hook de atalho de teclado",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/react": "^18.2.0"
+  },
+  "license": "MIT",
+  "include": [
+    "src",
+    "index.ts"
+  ],
+  "author": {
+    "name": "Isaac S Silva",
+    "email": "s.silva.software@gmail.com",
+    "url": "https://github.com/IsaacSSilva"
+  }
+}
