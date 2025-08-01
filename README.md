@@ -1,6 +1,6 @@
-# Keymash
+![Logo](doc/img/keymash.png) 
 
-<!-- ![Logo](/keymash.png) -->
+# Keymash
 
 Keymash é uma biblioteca JavaScript/TypeScript para gerenciamento de atalhos de teclado em aplicações web. Ela oferece hooks para React que permitem registrar e gerenciar combinações de teclas (key combos), além de fornecer utilitários para personalizar o comportamento de atalhos em diferentes contextos.
 
