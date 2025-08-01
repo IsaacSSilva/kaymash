@@ -1,4 +1,4 @@
-![Logo](doc/img/keymash.png) 
+![Logo](doc/img/keymash_background.png) 
 
 # Keymash
 
