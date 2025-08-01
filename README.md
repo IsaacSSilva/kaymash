@@ -1,153 +1,171 @@
-Perfeito! Aqui está o `README.md` atualizado com todas as melhorias do **keymash/v2**, **mantendo compatibilidade com a API antiga** via a função `useKaymash`.
+# Keymash
 
----
+<!-- ![Logo](/keymash.png) -->
 
-````md
-# 🧠 keymash
+Keymash é uma biblioteca JavaScript/TypeScript para gerenciamento de atalhos de teclado em aplicações web. Ela oferece hooks para React que permitem registrar e gerenciar combinações de teclas (key combos), além de fornecer utilitários para personalizar o comportamento de atalhos em diferentes contextos.
 
-**React Hook para atalhos de teclado com suporte a múltiplos contextos (`range`), registro em massa e bloqueio automático de eventos nativos.**  
-Agora modular, mais poderoso — **e ainda compatível com a versão antiga** via `useKaymash`.
+## Instalação
 
----
-
-## 🚀 Instalação
+Adicione ao seu projeto via npm:
 
 ```bash
-pnpm add keymash
-# ou
 npm install keymash
 ```
-````
 
-## Formas de utilizar
+## Principais Funcionalidades
 
-existe duas formas de usar sendo elas listando ou declarando diretamente.
+- **Registro de atalhos de teclado** com callbacks customizados.
+- **Gerenciamento de múltiplos atalhos** e escopos (ranges) ativos.
+- **Normalização e filtragem de atalhos** por contexto.
+- **Hooks prontos para uso em React**.
 
-- **useKeymashList**
-- **useKaymash**
+## API
 
----
+### 1. useKeymash
 
-<br/>
+Registra um atalho de teclado global que dispara um callback quando a combinação for pressionada.
 
-## 🧪 useKeymashList (versão nova)
+```typescript
+import { useKeymash } from "keymash";
 
-```tsx
+useKeymash(["Control", "k"], () => {
+  // Função executada ao pressionar Control + K
+});
+```
+
+**Parâmetros:**
+
+- `combo: string[]` – Array de teclas que formam o atalho (ex: `["Control", "k"]`).
+- `callback: () => void` – Função chamada quando o atalho for ativado.
+
+### 2. useKeymashList
+
+Gerencia uma lista de atalhos, permitindo múltiplos atalhos e escopos customizados.
+
+```typescript
 import { useKeymashList } from "keymash";
 
-function App() {
-  useKeymashList(
-    [
-      {
-        combo: ["Control", "k"],
-        action: () => alert("🔍 Busca ativada!"),
-        range: ["global"],
-        description: "Abrir busca",
-      },
-      {
-        combo: ["Shift", "p"],
-        action: () => console.log("Apresentação ativada"),
-        range: ["editor"],
-        description: "Modo apresentação",
-      },
-    ],
-    {
-      activeRanges: ["global", "editor"],
-    }
-  );
+const shortcuts = [
+  {
+    combo: ["Control", "s"],
+    action: () => { /* salvar */ },
+    range: ["editor"],
+    description: "Salvar documento"
+  },
+  {
+    combo: ["Control", "p"],
+    action: () => { /* abrir busca */ },
+    range: ["global"],
+    description: "Abrir busca"
+  }
+];
 
-  return <div>Atalhos ativados. Pressione e veja o que acontece!</div>;
+useKeymashList(shortcuts, { activeRanges: ["editor"] });
+```
+
+**Parâmetros:**
+
+- `shortcuts: Shortcut[]` – Lista de atalhos a serem registrados.
+- `options?: UseKeymashListOptions` – Opções, como ranges ativos.
+
+**Tipo `Shortcut`:**
+
+```typescript
+interface Shortcut {
+  combo: string[];
+  action: () => void;
+  range?: string[];
+  description?: string;
 }
 ```
 
----
+**Tipo `UseKeymashListOptions`:**
 
-## useKaymash
-
-Você ainda pode usar a API simples e direta da versão anterior com `useKaymash`, se quiser manter o estilo enxuto:
-
-```tsx
-import { useKaymash } from "keymash";
-
-function App() {
-  const [ativo, setAtivo] = useState(false);
-
-  useKaymash(["Control", "k"], () => {
-    setAtivo(!ativo);
-  });
-
-  return (
-    <div>
-      <h1>{ativo ? "Ativado!" : "Desativado!"}</h1>
-    </div>
-  );
+```typescript
+interface UseKeymashListOptions {
+  activeRanges?: string[];
 }
 ```
 
----
+### 3. Funções Utilitárias
 
-## ⚙️ API
+#### filterShortcutsByRange
 
-### 🔹 `useKeymashList(shortcuts: Shortcut[], options?: UseKeymashListOptions)`
+Filtra atalhos conforme ranges ativos.
 
-#### 🔑 Shortcut
-
-| Campo         | Tipo         | Obrigatório | Descrição                                       |
-| ------------- | ------------ | ----------- | ----------------------------------------------- |
-| `combo`       | `string[]`   | ✅          | Teclas do atalho (ex: `["Control", "k"]`)       |
-| `action`      | `() => void` | ✅          | Função executada ao disparar o combo            |
-| `range`       | `string[]`   | ❌          | Contextos onde o atalho é válido (`["editor"]`) |
-| `description` | `string`     | ❌          | Texto explicativo, útil para docs/UI            |
-
-#### ⚙️ UseKeymashListOptions
-
-| Campo          | Tipo       | Obrigatório | Descrição                                         |
-| -------------- | ---------- | ----------- | ------------------------------------------------- |
-| `activeRanges` | `string[]` | ❌          | Quais ranges estão ativos (default: `["global"]`) |
-
----
-
-### 🔹 `useKaymash(combo: string[], callback: () => void)`
-
-Compatível com versões anteriores. Registro simples de um atalho único.
-
----
-
-## ✅ Recursos
-
-- [x] Registro em massa de atalhos (`array de Shortcut`)
-- [x] Suporte a contextos com `range`
-- [x] `preventDefault` automático (bloqueia atalhos do navegador)
-- [x] Suporte à ordem invertida de teclas
-- [x] Cleanup automático no `unmount`
-- [x] Arquitetura modular e extensível
-- [x] Compatível com o hook antigo `useKaymash`
-
----
-
-## 🔧 Dica avançada
-
-Quer listar os atalhos registrados?
-
-```ts
-import { normalizeShortcuts } from "keymash/core";
-
-console.table(normalizeShortcuts(shortcuts));
+```typescript
+filterShortcutsByRange(shortcuts, activeRanges);
 ```
 
----
+#### isComboPressed
 
-## 📦 Requisitos
+Verifica se todos os elementos de um combo estão pressionados.
 
-- React 18 ou 19
-- TypeScript (opcional, mas altamente recomendado)
+```typescript
+isComboPressed(combo, pressedKeys);
+```
 
----
+#### normalizeShortcuts
 
-## 📃 Licença
+Garante que todos os atalhos tenham range definido (ou "global" por padrão).
 
-[MIT](./LICENSE)
+```typescript
+normalizeShortcuts(shortcuts);
+```
 
----
+### 4. Utilitário KeySet
 
-Feito com café, paciência e teclado por **S.Silva.**
+Classe para gerenciar o estado das teclas pressionadas.
+
+```typescript
+const keySet = new KeySet();
+keySet.add("a");
+keySet.has("a"); // true
+keySet.remove("a");
+keySet.clear();
+```
+
+## Estrutura dos Arquivos
+
+- `src/v0/keymash.js` e `.d.ts` – Hook para atalhos simples.
+- `src/v1/hooks/useKeymashList.js` e `.d.ts` – Hook para múltiplos atalhos e ranges.
+- `src/core/` – Funções utilitárias para filtragem e normalização.
+- `src/types/` – Tipos TypeScript para combos, ranges e atalhos.
+- `src/utils/keySet.util.js` – Classe auxiliar para armazenar teclas pressionadas.
+
+## Exemplos
+
+### Atalho global simples
+
+```typescript
+useKeymash(["Escape"], () => {
+  // Fecha modal ou executa outra ação
+});
+```
+
+### Múltiplos atalhos com ranges
+
+```typescript
+useKeymashList([
+  {
+    combo: ["Control", "b"],
+    action: () => {/* negrito */},
+    range: ["editor"]
+  },
+  {
+    combo: ["Control", "i"],
+    action: () => {/* itálico */},
+    range: ["editor"]
+  }
+], { activeRanges: ["editor"] });
+```
+
+## Observações
+
+- Os atalhos são sensíveis ao contexto dos ranges, permitindo escopos como "global" ou "editor".
+- Os hooks devem ser usados dentro de componentes React.
+- Combinações de teclas são normalizadas para garantir consistência.
+
+## Licença
+
+Consulte o arquivo LICENSE para informações de licença.
